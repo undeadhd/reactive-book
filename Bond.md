@@ -144,7 +144,7 @@ extension ReactiveExtensions where Base: UIScrollView {
 Теперь мы можем использовать это в коде, уже знакомым нам `binding'ом`.
 
 ~~~swift
-boolVariable.bind(to: scrollView.reactive.isScrollEnabled)
+*boolVariable*.bind(to: scrollView.reactive.isScrollEnabled)
 ~~~
 
 Или же нам хочется, чтобы наш `webView` автоматически грузил нам страницы, как только ссылка поменялась, для этого напишем следующее расширение.
