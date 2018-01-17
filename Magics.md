@@ -34,7 +34,7 @@ open func modify<T: MagicsInteractor>(request: URLRequest, interactor: T) -> URL
 Пример реализации метода:
 
 ~~~swift
-func modify(request: URLRequest) -> URLRequest {
+override func modify<T>(request: URLRequest, interactor: T) -> URLRequest where T : MagicsInteractor {
 	var newRequest = request
 	newRequest.setJSONBody(with: [
 		"user" : "user1",
@@ -45,3 +45,33 @@ func modify(request: URLRequest) -> URLRequest {
 }
 ~~~
 
+Метод 
+
+~~~swift
+//вызывается, если запрос прошел неуспешно
+open func hasErrorFor<T: MagicsInteractor>(json: MagicsJSON?, response: URLResponse?, error: Error?, interactor: T) -> Error?{ return nil }
+~~~
+
+Пример реализации
+
+~~~swift
+override func hasErrorFor<T>(json: MagicsJSON?, response: URLResponse?, error: Error?, interactor: T) -> Error? where T : MagicsInteractor {
+        guard let json = json else {
+            return ResponseError(errorType: .noJSON)
+        }
+        
+        let status = ResponseStatus(rawValue: json["status"].string ?? "") ?? .error
+        
+        print(status)
+        
+        let error = ResponseError(
+            description: json["first_error"]?.string,
+            stringKey: json["error_key"]?.string)
+        
+        print(error?.description)
+        print(error?.stringKey)
+        
+		print(json)
+        return error
+}    
+~~~
