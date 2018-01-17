@@ -52,4 +52,3 @@ struct TestModuleState: AmberState {
     init(data: Void) { }
 }
 ~~~
-
